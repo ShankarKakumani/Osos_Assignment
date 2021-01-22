@@ -46,22 +46,23 @@ public class ParentAdapter extends RecyclerView.Adapter<ParentAdapter.ProductVie
         ParentClass parentClass = parentClassList.get(position);
         holder.titleTv.setText(parentClass.getTitle());
 
-        holder.imagesTitleRecycler.setHasFixedSize(true);
-        holder.imagesTitleRecycler.setNestedScrollingEnabled(false);
+        holder.imagesRecycler.setHasFixedSize(true);
+        holder.imagesRecycler.setNestedScrollingEnabled(false);
 
         //LinearLayoutManager latestLinearLayout = new GridLayoutManager(act,3);
-        LinearLayoutManager latestLinearLayout = new GridLayoutManager(holder.imagesTitleRecycler.getContext(), 2, GridLayoutManager.HORIZONTAL, false);
+        LinearLayoutManager latestLinearLayout = new GridLayoutManager(holder.imagesRecycler.getContext(), 2, GridLayoutManager.HORIZONTAL, false);
 
 
-        holder.imagesTitleRecycler.setLayoutManager(latestLinearLayout);
+        holder.imagesRecycler.setLayoutManager(latestLinearLayout);
 
 
-        holder.titleImageButton.setOnClickListener(view -> {
-
+        holder.openGalleryButton.setOnClickListener(view -> {
+            //I had to implemented Interface method because ParentAdapter doesn't have any support for onActivityResult
             imageInterface.onImageClick(position);
         });
+        
         ImagesAdapter imagesAdapter = new ImagesAdapter(parentClass.getImageList());
-        holder.imagesTitleRecycler.setAdapter(imagesAdapter);
+        holder.imagesRecycler.setAdapter(imagesAdapter);
 
 
     }
@@ -76,15 +77,15 @@ public class ParentAdapter extends RecyclerView.Adapter<ParentAdapter.ProductVie
     static class ProductViewHolder extends RecyclerView.ViewHolder {
 
         TextView titleTv;
-        ImageButton titleImageButton;
-        RecyclerView imagesTitleRecycler;
+        ImageButton openGalleryButton;
+        RecyclerView imagesRecycler;
 
         public ProductViewHolder(View itemView) {
             super(itemView);
 
             titleTv = itemView.findViewById(R.id.titleTv);
-            titleImageButton = itemView.findViewById(R.id.titleImageButton);
-            imagesTitleRecycler = itemView.findViewById(R.id.imagesTitleRecycler);
+            openGalleryButton = itemView.findViewById(R.id.titleImageButton);
+            imagesRecycler = itemView.findViewById(R.id.imagesTitleRecycler);
         }
     }
 }

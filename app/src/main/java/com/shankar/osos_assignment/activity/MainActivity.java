@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity implements ImageInterface {
     int globalPosition;
 
     FloatingActionButton floatingButton;
-    private RecyclerView parentRecyclerView;
+    RecyclerView parentRecyclerView;
     List<ParentClass> parentClassList;
     AlertDialog alertDialog;
     ParentAdapter parentAdapter;
@@ -53,6 +53,7 @@ public class MainActivity extends AppCompatActivity implements ImageInterface {
 
         parentClassList = new ArrayList<>();
 
+        // Initializing parent RecyclerView, Linear layout manager, parent adapter
         parentRecyclerView = findViewById(R.id.parent_recycler);
         parentRecyclerView.setNestedScrollingEnabled(false);
         parentRecyclerView.setHasFixedSize(true);
@@ -66,13 +67,16 @@ public class MainActivity extends AppCompatActivity implements ImageInterface {
         floatingButton = findViewById(R.id.add_button);
         floatingButton.setOnClickListener(v -> {
 
+
             AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(MainActivity.this);
             LayoutInflater inflater = MainActivity.this.getLayoutInflater();
+            //adding layout file to Alert Dialog
             View dialogView = inflater.inflate(R.layout.layout_alert_dialog, null);
             dialogBuilder.setView(dialogView);
 
             alertDialog = dialogBuilder.create();
 
+            //Initializing Alert Dialog components
             TextInputEditText titleET = dialogView.findViewById(R.id.titleET);
             Button cancelButton = dialogView.findViewById(R.id.cancelButton);
             Button okayButton = dialogView.findViewById(R.id.okayButton);
@@ -87,6 +91,7 @@ public class MainActivity extends AppCompatActivity implements ImageInterface {
                 }
                 else
                 {
+                    //Passing Title into adapter
                     parentClassList.add(new ParentClass(titleST));
                     alertDialog.dismiss();
                     parentAdapter.notifyDataSetChanged();
@@ -100,6 +105,7 @@ public class MainActivity extends AppCompatActivity implements ImageInterface {
     }
 
 
+    //I had to implemented Interface method because i cannot have onActivityResult in ParentAdapter Class
     @Override
     public void onImageClick(int position) {
 
