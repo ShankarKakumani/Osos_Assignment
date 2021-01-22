@@ -103,9 +103,7 @@ public class MainActivity extends AppCompatActivity implements ImageInterface {
         });
 
     }
-
-
-    //I had to implemented Interface method because i cannot have onActivityResult in ParentAdapter Class
+    //I had to implement Interface method because ParentAdapter didn't accept onActivityResult
     @Override
     public void onImageClick(int position) {
 
@@ -117,7 +115,7 @@ public class MainActivity extends AppCompatActivity implements ImageInterface {
 
             if(isPackageInstalled())
             {
-                //Will run if google photos installed
+                //Opens google photos
                 Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
                 //intent.setType("image/*");
                 intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
