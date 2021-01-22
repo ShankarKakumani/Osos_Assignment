@@ -27,4 +27,9 @@
 
     </application>
 
+    <queries>
+        <!-- Explicit apps you know in advance about: -->
+        <package android:name="com.google.android.apps.photos"/>
+    </queries>
+
 </manifest>

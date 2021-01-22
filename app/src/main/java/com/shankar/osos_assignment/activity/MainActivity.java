@@ -19,7 +19,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
-import com.shankar.customtoast.Toasty;
 import com.shankar.osos_assignment.R;
 import com.shankar.osos_assignment.adapter.ImageInterface;
 import com.shankar.osos_assignment.adapter.ParentAdapter;
@@ -116,12 +115,13 @@ public class MainActivity extends AppCompatActivity implements ImageInterface {
 
         } else {
 
-            if(isPackageInstalled())
+            if(!isPackageInstalled())
             {
                 //Will run if google photos installed
                 Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
                 //intent.setType("image/*");
                 intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+                intent.setPackage("com.google.android.apps.photos");
                 startActivityForResult(Intent.createChooser(intent, "Pictures: "), PICK_IMAGE);
             }
             else
@@ -159,8 +159,7 @@ public class MainActivity extends AppCompatActivity implements ImageInterface {
 
     private boolean isPackageInstalled() {
         try {
-
-            PackageManager packageManager = getPackageManager();
+            PackageManager packageManager = this.getPackageManager();
             packageManager.getPackageInfo("com.google.android.apps.photos", 0);
             return true;
         } catch (PackageManager.NameNotFoundException e) {
