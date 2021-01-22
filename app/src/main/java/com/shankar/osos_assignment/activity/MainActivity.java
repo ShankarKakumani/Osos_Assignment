@@ -106,12 +106,12 @@ public class MainActivity extends AppCompatActivity implements ImageInterface {
         globalPosition = position;
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions((Activity) this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_EXTERNAL_STORAGE);
+
         } else {
 
             //Intent intent = new Intent(Intent.ACTION_GET_CONTENT);  For File Manager
-
             Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
-            intent.setType("image/*");
+            //intent.setType("image/*");
             intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
             startActivityForResult(Intent.createChooser(intent, "Pictures: "), PICK_IMAGE);
 
