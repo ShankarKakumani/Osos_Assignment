@@ -115,7 +115,7 @@ public class MainActivity extends AppCompatActivity implements ImageInterface {
 
         } else {
 
-            if(!isPackageInstalled())
+            if(isPackageInstalled())
             {
                 //Will run if google photos installed
                 Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
