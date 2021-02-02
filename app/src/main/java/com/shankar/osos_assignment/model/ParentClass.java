@@ -13,7 +13,6 @@ public class ParentClass {
     public ParentClass(String title) {
         this.title = title;
         imageList = new ArrayList<>();
-
     }
 
     public void addImage(Uri uri)

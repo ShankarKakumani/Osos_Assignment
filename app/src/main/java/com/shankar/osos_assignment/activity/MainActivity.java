@@ -17,8 +17,12 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.esafirm.imagepicker.features.ImagePicker;
+import com.esafirm.imagepicker.model.Image;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
+import com.jaiky.imagespickers.ImageConfig;
+import com.shankar.customtoast.Toasty;
 import com.shankar.osos_assignment.R;
 import com.shankar.osos_assignment.adapter.ImageInterface;
 import com.shankar.osos_assignment.adapter.ParentAdapter;
@@ -40,7 +44,11 @@ public class MainActivity extends AppCompatActivity implements ImageInterface {
     List<ParentClass> parentClassList;
     AlertDialog alertDialog;
     ParentAdapter parentAdapter;
-    
+
+
+
+
+    private ImageConfig imageConfig;
 
 
 
@@ -103,6 +111,7 @@ public class MainActivity extends AppCompatActivity implements ImageInterface {
         });
 
     }
+
     //I had to implement Interface method because ParentAdapter didn't accept onActivityResult
     @Override
     public void onImageClick(int position) {
@@ -113,26 +122,27 @@ public class MainActivity extends AppCompatActivity implements ImageInterface {
 
         } else {
 
-            if(isPackageInstalled())
-            {
-                //Opens google photos
-                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
-                //intent.setType("image/*");
-                intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
-                intent.setPackage("com.google.android.apps.photos");
-                startActivityForResult(Intent.createChooser(intent, "Pictures: "), PICK_IMAGE);
-            }
-            else
-            {
-                //Opens file manager
-                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-                intent.setType("image/*");
-                intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
-                startActivityForResult(Intent.createChooser(intent, "Pictures: "), PICK_IMAGE);
-
-            }
-
-
+//            if(isPackageInstalled())
+//            {
+//                //Opens google photos
+//                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
+//                //intent.setType("image/*");
+//                intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+//                intent.setPackage("com.google.android.apps.photos");
+//                startActivityForResult(Intent.createChooser(intent, "Pictures: "), PICK_IMAGE);
+//            }
+//            else
+//            {
+//                //Opens file manager
+//                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+//                intent.setType("image/*");
+//                intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+//                startActivityForResult(Intent.createChooser(intent, "Pictures: "), PICK_IMAGE);
+//
+//            }
+            ImagePicker.create(this) // Activity or Fragment
+                    .limit(10)
+                    .start();
         }
     }
 
@@ -143,6 +153,8 @@ public class MainActivity extends AppCompatActivity implements ImageInterface {
             if (resultCode == Activity.RESULT_OK) {
                 if (data.getClipData() != null) {
                     int count = data.getClipData().getItemCount();
+                    Toasty.infoToast(this,""+data.getClipData().getItemAt(1).getUri());
+
                     for (int i = 0; i < count; i++) {
 //                        uri.add(data.getClipData().getItemAt(i).getUri());
                         parentClassList.get(globalPosition).addImage(data.getClipData().getItemAt(i).getUri());
@@ -152,8 +164,17 @@ public class MainActivity extends AppCompatActivity implements ImageInterface {
                 }
             }
         }
-    }
 
+        if (ImagePicker.shouldHandle(requestCode, resultCode, data)) {
+            List<com.esafirm.imagepicker.model.Image> images = ImagePicker.getImages(data);
+
+            for (int i = 0; i < images.size(); i++) {
+                parentClassList.get(globalPosition).addImage(images.get(i).getUri());
+            }
+            parentAdapter.notifyDataSetChanged();
+        }
+
+    }
 
     private boolean isPackageInstalled() {
         try {
@@ -164,6 +185,8 @@ public class MainActivity extends AppCompatActivity implements ImageInterface {
             return false;
         }
     }
+
+
 
 
 }
